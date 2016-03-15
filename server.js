@@ -55,6 +55,18 @@ body.description = body.description.trim();
 
 	res.json(body);
 });
+
+app.delete('/todos/:id', function (req, res) {
+var todoId = parseInt(req.params.id, 10);
+var matchedTodo = _.findWhere(todos, {id: todoId});
+if(!matchedTodo){
+	res.status(404).json({"error": "no todo"});
+
+} else {
+	todos = _.without(todos, matchedTodo)
+	res.json(matchedTodo);
+}
+});
 // two agr for below function port and callback function to execute when everything is done
 app.listen (PORT, function () {
 	console.log('Express listening on port' + PORT + '!');
