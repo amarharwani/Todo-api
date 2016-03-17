@@ -18,6 +18,7 @@ app.get('/', function (req, res) {
 app.get('/todos', function (req, res) {
 	// mind - the below todos is an array here 
 
+//getting the onlt that  task  by query , like completed=true
 	var queryParams = req.query;
 	var filteredTodos = todos;
 	if (queryParams.hasOwnProperty('completed') && queryParams.completed === 'true') {
@@ -25,6 +26,11 @@ app.get('/todos', function (req, res) {
 		} else if(queryParams.hasOwnProperty('completed') && queryParams.completed === 'false') {
 		filteredTodos = _.where(filteredTodos, {completed: false});
 		} 
+		if(queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
+			filteredTodos = _.filter(filteredTodos , function (todo) {
+return todo.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1;
+			});
+		}
 	res.json(filteredTodos);
 });
 
